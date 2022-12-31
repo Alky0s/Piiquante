@@ -1,3 +1,4 @@
+// We import http package and our app
 const http = require('http');
 const app = require('./app');
 
@@ -34,7 +35,7 @@ const errorHandler = error => {
       throw error;
   }
 };
-
+// Node server creation
 const server = http.createServer(app);
 
 server.on('error', errorHandler);

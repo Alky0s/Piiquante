@@ -1,7 +1,10 @@
+// We import sauce model and fs package
 const Sauce = require('../models/sauce');
 const fs = require('fs');
-const sauce = require('../models/sauce');
 
+// Middlewares to create and export
+
+// POST a new sauce 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -16,7 +19,7 @@ exports.createSauce = (req, res, next) => {
   .then(() => { res.status(201).json({message: 'Sauce enregistrée !'})})
   .catch(error => { res.status(400).json( { error })})
 };
-  
+  // GET 1 sauce
   exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
       _id: req.params.id
@@ -32,7 +35,7 @@ exports.createSauce = (req, res, next) => {
       }
     );
   };
-  
+  // PUT, to modify
   exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -57,7 +60,7 @@ exports.createSauce = (req, res, next) => {
             res.status(400).json({ error });
         });
  };
-  
+  // DELETE 
  exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
       .then(sauce => {
@@ -76,7 +79,7 @@ exports.createSauce = (req, res, next) => {
           res.status(500).json({ error });
       });
 };
-  
+  // GET all
   exports.getAllSauces = (req, res, next) => {
     Sauce.find().then(
       (sauces) => {
@@ -90,16 +93,12 @@ exports.createSauce = (req, res, next) => {
       }
     );
   };
-
+// POST like / dislike system
   exports.likeSauce = (req, res, next) => {
-    // console.log("je suis un like");
-    // console.log(req.body);
-
+    console.log("je suis un like");
+   
     Sauce.findOne({ _id: req.params.id})
-      .then(sauce => {
-        // console.log(sauce);
-        // console.log(sauce.usersLiked);
-        // console.log(sauce.usersDisliked);
+      .then((sauce) => {
         switch(req.body.like) {
           case 1 : 
             if(!sauce.usersLiked.includes(req.body.userId) && req.body.like === 1) {
@@ -110,7 +109,7 @@ exports.createSauce = (req, res, next) => {
                   $push: {usersLiked: req.body.userId},
                 }
               )
-              .then(() => res.status(201).json)
+              .then(() => res.status(201).json())
               .catch((error) => res.status(400).json({error}));
             }
             break;

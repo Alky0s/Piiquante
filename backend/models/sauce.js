@@ -1,5 +1,6 @@
+// We import mongoose 
 const mongoose = require('mongoose');
-
+// Creation of mongoose schema, sauce model
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
@@ -13,5 +14,5 @@ const sauceSchema = mongoose.Schema({
     usersLiked: { type: [String]},
     usersDisliked: { type: [String]}
 })
-
+// We exports our model
 module.exports = mongoose.model('sauce', sauceSchema);
