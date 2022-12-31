@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require ('body-parser');
 const mongoose = require('mongoose');
-
+// We imports routers 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 const path = require('path');
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-
+// Middlewares for routes logic
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));

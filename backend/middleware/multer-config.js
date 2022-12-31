@@ -1,3 +1,4 @@
+// We imports multer package
 const multer = require('multer');
 
 const MIME_TYPES = {
@@ -5,7 +6,7 @@ const MIME_TYPES = {
   'image/jpeg': 'jpg',
   'image/png': 'png'
 };
-
+// Where to store files uploaded
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');
@@ -16,5 +17,5 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + '.' + extension);
   }
 });
-
+// Multer exportation, for pictures only
 module.exports = multer({storage: storage}).single('image');

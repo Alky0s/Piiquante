@@ -1,9 +1,10 @@
-
+// We imports bcrypt and jwt packages (security)
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+// We imports user model
 const User = require('../models/user');
-
+// Middlewares to  export
+// POST signup
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
@@ -17,7 +18,7 @@ exports.signup = (req, res, next) => {
       })
       .catch(error => res.status(500).json({ error }));
   };
-
+// POST login
   exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
