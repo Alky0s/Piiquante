@@ -1,5 +1,6 @@
 // We import express package, body-parser and mongoose 
 const express = require('express');
+// const helmet = require("helmet");
 const bodyParser = require ('body-parser');
 const mongoose = require('mongoose');
 // We imports routers 
@@ -15,6 +16,8 @@ mongoose.connect('mongodb+srv://Alky0s:DevWebPowA@cluster0.smvfjby.mongodb.net/?
 
 // We create our express app
 const app = express();
+// We use helmet
+// app.use(helmet());
 // We extracts request body 
 app.use(express.json());
 app.use(bodyParser.json());

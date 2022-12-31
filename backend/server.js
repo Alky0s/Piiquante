@@ -2,6 +2,10 @@
 const http = require('http');
 const app = require('./app');
 
+// Importation of dotenv package
+const dotenv = require('dotenv');
+const dotenvConfig = require('dotenv').config();
+
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
