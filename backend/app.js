@@ -1,6 +1,11 @@
 // We import express package, body-parser and mongoose 
 const express = require('express');
-// const helmet = require("helmet");
+// Importation of dotenv package
+const dotenv = require('dotenv');
+const dotenvConfig = require('dotenv').config();
+
+const helmet = require("helmet");
+
 const bodyParser = require ('body-parser');
 const mongoose = require('mongoose');
 // We imports routers 
@@ -8,7 +13,7 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 const path = require('path');
 // Connection between our API and the database
-mongoose.connect('mongodb+srv://Alky0s:DevWebPowA@cluster0.smvfjby.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -16,8 +21,7 @@ mongoose.connect('mongodb+srv://Alky0s:DevWebPowA@cluster0.smvfjby.mongodb.net/?
 
 // We create our express app
 const app = express();
-// We use helmet
-// app.use(helmet());
+
 // We extracts request body 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -28,6 +32,15 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
+
+// We use helmet
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
+
+
 // Middlewares for routes logic
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);

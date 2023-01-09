@@ -95,34 +95,29 @@ exports.createSauce = (req, res, next) => {
   };
 // POST like / dislike system
   exports.likeSauce = (req, res, next) => {
-    console.log("je suis un like");
+    // console.log("je suis un like");
    
     Sauce.findOne({ _id: req.params.id})
       .then((sauce) => {
+        console.log(req.body.like);
         switch(req.body.like) {
           case 1 : 
-            if(!sauce.usersLiked.includes(req.body.userId) && req.body.like === 1) {
+            if(!sauce.usersLiked.includes(req.body.userId)) {
               Sauce.updateOne(
                 {_id : req.params.id},
-                { 
-                  $inc: {likes : +1},
-                  $push: {usersLiked: req.body.userId},
-                }
+                { $inc: {likes : +1}, $push: {usersLiked: req.body.userId}, _id : req.params.id}
               )
               .then(() => res.status(201).json())
               .catch((error) => res.status(400).json({error}));
             }
             break;
           case -1 :
-            if(!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1) {
+            if(!sauce.usersDisliked.includes(req.body.userId)) {
               Sauce.updateOne(
                 {_id : req.params.id},
-                { 
-                  $inc: {dislikes : +1},
-                  $push: {usersDisliked: req.body.userId},
-                }
+                { $inc: {dislikes : +1}, $push: {usersDisliked: req.body.userId}, _id : req.params.id}
               )
-              .then(() => res.status(201).json)
+              .then(() => res.status(201).json())
               .catch((error) => res.status(400).json({error}));
             }
               break;
@@ -130,28 +125,22 @@ exports.createSauce = (req, res, next) => {
             if(sauce.usersLiked.includes(req.body.userId)){
               Sauce.updateOne(
                 {_id : req.params.id},
-                { 
-                  $inc: {likes : -1},
-                  $pull: {usersLiked: req.body.userId},
-                }
+                {$inc: {likes : -1}, $pull: {usersLiked: req.body.userId}, _id : req.params.id}
               )
-              .then(() => res.status(201).json)
+              .then(() => res.status(201).json())
               .catch((error) => res.status(400).json({error}));
             } 
-              if(sauce.usersDisliked.includes(req.body.userId)){
-                Sauce.updateOne(
-                  {_id : req.params.id},
-                  { 
-                    $inc: {dislikes : -1},
-                    $pull: {usersDisliked: req.body.userId},
-                  }
-                )
-                .then(() => res.status(201).json)
-                .catch((error) => res.status(400).json({error}));
+            else if(sauce.usersDisliked.includes(req.body.userId)){
+              Sauce.updateOne(
+                {_id : req.params.id},
+                { $inc: {dislikes : -1}, $pull: {usersDisliked: req.body.userId}, _id : req.params.id}
+              )
+              .then(() => res.status(201).json())
+              .catch((error) => res.status(400).json({error}));
             }  
-            break; 
-            default:
-          }
-        })
-        .catch((error) => res.status(404).json({error}));
-      };
+          break;  
+          default: console.log("erreur");
+        }
+      })
+      .catch((error) => res.status(404).json({error}));
+    };
