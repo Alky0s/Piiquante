@@ -1,17 +1,22 @@
 // We import express package, body-parser and mongoose 
 const express = require('express');
+
 // Importation of dotenv package
 const dotenv = require('dotenv');
 const dotenvConfig = require('dotenv').config();
 
+// We import helmet package
 const helmet = require("helmet");
 
+// We import body-parser and mongoose packages
 const bodyParser = require ('body-parser');
 const mongoose = require('mongoose');
+
 // We imports routers 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 const path = require('path');
+
 // Connection between our API and the database
 mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
@@ -25,6 +30,7 @@ const app = express();
 // We extracts request body 
 app.use(express.json());
 app.use(bodyParser.json());
+
 // Middleware for CORS issue
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -40,10 +46,10 @@ app.use(
   })
 );
 
-
 // Middlewares for routes logic
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
 // We exports our app 
 module.exports = app;
